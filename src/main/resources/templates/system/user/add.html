@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/datapicker/datepicker3.css}" rel="stylesheet"/>
+<style>
+    .col-md-6 {
+        width: 50%;
+        float: left;
+    }
+
+    .col-md-12 {
+        width: 100%;
+        float: left;
+    }
+
+    .col-md-12 label {
+        width: 14.5%;
+        padding-right: 0px;
+    }
+
+    .col-md-12 .col-sm-9 {
+        padding-left: 0px;
+    }
+
+    .col-sm-3 {
+        padding-left: 0;
+    }
+
+    .control-label {
+        text-align: left;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content" style="padding: 5px;">
+    <form class="form-horizontal" id="form-user-add">
+        <input name="deptId" type="hidden" id="treeId"/>
+        <div class="panel  panel-default">
+            <div class="panel-heading"><label>基本信息</label></div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label ">登录名称：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" id="loginName" name="loginName"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用户名称：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="userName" id="userName">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" id="data_1">
+                        <label class="col-sm-3 control-label">出生日期：</label>
+                        <div class="col-sm-8">
+                            <div class="input-group date">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input type="text" class="form-control" id="birthday" name="birthday">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">性别：</label>
+                        <div class="col-sm-8">
+                            <select id="sex" class="form-control m-b"
+                                    th:with="type=${@dictService.selectDictData('sys_user_sex')}">
+                                <option th:each="dict : ${type}" th:text="${dict['dictLabel']}"
+                                        th:value="${dict['dictValue']}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="clear: both">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">手机：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="phonenumber" id="phonenumber">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">固定电话：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="telephone" id="telephone">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮箱：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="email" id="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">传真：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="fax" id="fax">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮编：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="postalcode" id="postalcode">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态：</label>
+                        <div class="col-sm-8">
+                            <div class="onoffswitch">
+                                <input type="checkbox" th:checked="true" class="onoffswitch-checkbox" id="status"
+                                       name="status">
+                                <label class="onoffswitch-label" for="status">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="clear: both">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">角色：</label>
+                        <div class="col-sm-8">
+                            <label th:each="role:${roles}" class="checkbox-inline i-checks">
+                                <input name="role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">办公地址：</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="officeaddress" id="officeaddress">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">密码：</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="password" name="password" id="password"
+                                   th:value="${@configService.selectConfigByKey('sys.user.initPassword')}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><label>员工信息</label></div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">部门名称：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="deptName" onclick="selectDeptTree()"
+                                   readonly="true"
+                                   id="treeName">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">职务：</label>
+                        <div class="col-sm-8">
+                            <select id="post" name="post" class="form-control select2-hidden-accessible" multiple="">
+                                <option th:each="post:${posts}" th:value="${post.postId}"
+                                        th:text="${post.postName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="clear: both">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">职级：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="rank" id="rank">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">基本工资：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="basicpay" id="basicpay">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">技能补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="skillssubsidy" id="skillssubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">职务补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="jobsubsidy" id="jobsubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">午餐补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="lunchsubsidy" id="lunchsubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">地域补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="geographicalsubsidy" id="geographicalsubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">浮动工资：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="fluctuatingwages" id="fluctuatingwages">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">异地补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="differentplacesubsidy"
+                                   id="differentplacesubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">通话补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="Telephonesubsidy" id="Telephonesubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">自备电脑补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="computersubsidy" id="computersubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">财务证书补贴：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="financialsubsidy" id="financialsubsidy">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否试用：</label>
+                        <div class="col-sm-8">
+                            <select id="pilot" class="form-control m-b"
+                                    th:with="type=${@dictService.selectDictData('sys_yes_no')}">
+                                <option th:each="dict : ${type}" th:text="${dict['dictLabel']}"
+                                        th:value="${dict['dictValue']}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="clear: both;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否转正：</label>
+                        <div class="col-sm-8">
+                            <select id="turnpositive" class="form-control m-b"
+                                    th:with="type=${@dictService.selectDictData('sys_yes_no')}">
+                                <option th:each="dict : ${type}" th:text="${dict['dictLabel']}"
+                                        th:value="${dict['dictValue']}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-9">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<!-- Data picker -->
+<script th:src="@{/ajax/libs/datapicker/bootstrap-datepicker.js}"></script>
+<script>
+    $("#form-user-add").validate({
+        rules: {
+            loginName: {
+                required: true,
+                minlength: 2,
+                maxlength: 20,
+                remote: {
+                    url: ctx + "system/user/checkLoginNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: function () {
+                            return $.trim($("#loginName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            userName: {
+                required: true,
+            },
+            deptName: {
+                required: true,
+            },
+            password: {
+                required: true,
+                minlength: 5,
+                maxlength: 20
+            },
+            email: {
+                required: true,
+                email: true,
+                remote: {
+                    url: ctx + "system/user/checkEmailUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: function () {
+                            return $.trim($("#email").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            phonenumber: {
+                required: true,
+                isPhone: true,
+                remote: {
+                    url: ctx + "system/user/checkPhoneUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        name: function () {
+                            return $.trim($("#phonenumber").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+        },
+        messages: {
+            "loginName": {
+                remote: "用户已经存在"
+            },
+            "email": {
+                remote: "Email已经存在"
+            },
+            "phonenumber": {
+                remote: "手机号码已经存在"
+            }
+        },
+        submitHandler: function (form) {
+            add();
+        }
+    });
+    $('#birthday').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+
+    function add() {
+        var userId = $("input[name='userId']").val();
+        var deptId = $("input[name='deptId']").val();
+        var loginName = $("input[name='loginName']").val();
+        var userName = $("input[name='userName']").val();
+        var password = $("input[name='password']").val();
+        var email = $("input[name='email']").val();
+        var phonenumber = $("input[name='phonenumber']").val();
+        var sex = $("#sex option:selected").val();
+        var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
+        var roleIds = $.form.selectCheckeds("role");
+        var postIds = $.form.selectSelects("post");
+        var telephone = $("input[name='telephone']").val();
+        var fax = $("input[name='fax']").val();
+        var postalcode = $("input[name='postalcode']").val();
+        var officeaddress = $("input[name='officeaddress']").val();
+        var birthday = $("#birthday").val();
+        var rank = $("#rank").val();
+        var basicpay = $("#basicpay").val();
+        var skillssubsidy = $("#skillssubsidy").val();
+        var jobsubsidy = $("#jobsubsidy").val();
+        var lunchsubsidy = $("#lunchsubsidy").val();
+        var geographicalsubsidy = $("#geographicalsubsidy").val();
+        var fluctuatingwages = $("#fluctuatingwages").val();
+        var differentplacesubsidy = $("#differentplacesubsidy").val();
+        var Telephonesubsidy = $("#Telephonesubsidy").val();
+        var computersubsidy = $("#computersubsidy").val();
+        var financialsubsidy = $("#financialsubsidy").val();
+        var pilot = $("#pilot option:selected").val();
+        var turnpositive = $("#turnpositive option:selected").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "system/user/save",
+            data: {
+                "userId": userId,
+                "deptId": deptId,
+                "loginName": loginName,
+                "userName": userName,
+                "password": password,
+                "email": email,
+                "phonenumber": phonenumber,
+                "sex": sex,
+                "status": status,
+                "roleIds": roleIds,
+                "postIds": postIds,
+                "telephone": telephone,
+                "fax": fax,
+                "postalcode": postalcode,
+                "officeaddress": officeaddress,
+                "birthday": birthday,
+                "rank": rank,
+                "basicpay": basicpay,
+                "skillssubsidy": skillssubsidy,
+                "jobsubsidy": jobsubsidy,
+                "lunchsubsidy": lunchsubsidy,
+                "geographicalsubsidy": geographicalsubsidy,
+                "fluctuatingwages": fluctuatingwages,
+                "differentplacesubsidy": differentplacesubsidy,
+                "Telephonesubsidy": Telephonesubsidy,
+                "computersubsidy": computersubsidy,
+                "financialsubsidy": financialsubsidy,
+                "pilot": pilot,
+                "turnpositive": turnpositive
+            },
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                $.operate.saveSuccess(data);
+            }
+        });
+    }
+
+    /*用户管理-新增-选择部门树*/
+    function selectDeptTree() {
+        var treeId = $("#treeId").val();
+        var deptId = treeId == null || treeId == "" ? "100" : treeId;
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        $.modal.open("选择部门", url, '380', '380');
+    }
+</script>
+</body>
+</html>

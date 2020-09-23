@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+<style>
+    .col-sm-12{
+        padding-top: 10px;
+        text-align: center;
+    }
+</style>
+<body class="white-bg">
+<div class="col-sm-12" >
+    <input type="file" id="excel" name="excel" class="form-control">
+</div>
+<div class="col-sm-12">
+    <button  id="import-excel" class="btn btn-primary" type="button">提交</button>
+</div>
+<div th:include="include::footer"></div>
+<script>
+    $(function () {
+        $("#import-excel").on('click', function(){
+            importExcel();
+        })
+    })
+
+    function importExcel() {
+        var formdata = new FormData();
+        formdata.append('excel', $('#excel')[0].files[0]);
+        $.ajax({
+            url: ctx + "system/user/importExcel",
+            type: "post",
+            cache: false,
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                $.operate.saveSuccess(result);
+            }
+        })
+    }
+</script>
+</body>
+</html>
